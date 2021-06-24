@@ -75,3 +75,8 @@ def create_player() -> str:
 def error_message(display_error):
     print(display_error)
 
+
+def show_result(tournament_scores):
+    for id, score in tournament_scores.items():
+        print(f'Player ID : {id}  -- Player {score}')
+
