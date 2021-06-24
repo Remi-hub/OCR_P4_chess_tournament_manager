@@ -16,6 +16,7 @@ class Match:
                        f" '{self.id_player_1}' for player 1,"
                        f" '{self.id_player_2}' for Player 2,"
                        f" Or '0' if there's a draw\n")
+                        # todo faire une verif sur les inputs
 
         if str(self.id_player_1) == winner:
             self.score_player_1 = 1
