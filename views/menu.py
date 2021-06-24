@@ -59,8 +59,12 @@ def show_all_players():
 
 
 def tournament_menu_response_1():
-    player_selection = int(input('Enter the player ID\n'))
-    return player_selection
+    player_selection = input('Enter the player ID\n')
+    while not player_selection.isdecimal():
+        print('Must be integer')
+        player_selection = input('Enter the player ID\n')
+    return int(player_selection)
+
 
 
 def create_player() -> str:
