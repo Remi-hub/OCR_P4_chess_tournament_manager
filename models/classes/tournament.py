@@ -114,3 +114,5 @@ class Tournament:
                             self.list_of_rounds[self.ongoing_round - 1].list_of_matches.append(
                                 Match('on_going', player_1[0], player_2[0])
                             )
+    def end_round(self):
+        self.list_of_rounds[-1].round_ended()
