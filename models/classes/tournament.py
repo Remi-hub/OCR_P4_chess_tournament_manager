@@ -64,7 +64,6 @@ class Tournament:
         for player in list_of_players:
             self.add_player(player)
 
-
     def compute_next_round(self):
         """matching players for the next turn, first round based on ranking, then by score"""
         if self.ongoing_round == 1:
@@ -111,7 +110,6 @@ class Tournament:
                             self.list_of_rounds[self.ongoing_round - 1].list_of_matches.append(
                                 Match('on_going', player_1[0], player_2[0])
                             )
-
 
     def end_round(self):
         self.list_of_rounds[-1].round_ended()
