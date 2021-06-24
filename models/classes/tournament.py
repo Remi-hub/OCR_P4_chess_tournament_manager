@@ -81,10 +81,7 @@ class Tournament:
             self.ongoing_round += 1
 
         else:
-            last_round = self.ongoing_round - 1
-            for match in self.list_of_rounds[last_round-1].list_of_matches:
-                self.scores[match.id_player_1][0] += match.score_player_1
-                self.scores[match.id_player_2][0] += match.score_player_2
+
             # .items() pour créer une liste de tuple contenant la clef et la valeur de mon dict
             # key=lambda sert de clef de tri avec le paramètre item: item[1] (score, rating)
             #  item[1][0] correspond au score et item [1][1] correspond au rating
@@ -114,5 +111,11 @@ class Tournament:
                             self.list_of_rounds[self.ongoing_round - 1].list_of_matches.append(
                                 Match('on_going', player_1[0], player_2[0])
                             )
+
+
     def end_round(self):
         self.list_of_rounds[-1].round_ended()
+        last_round = self.ongoing_round - 1
+        for match in self.list_of_rounds[last_round - 1].list_of_matches:
+            self.scores[match.id_player_1][0] += match.score_player_1
+            self.scores[match.id_player_2][0] += match.score_player_2
