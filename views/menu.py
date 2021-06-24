@@ -50,6 +50,7 @@ def tournament_menu():
                  f"Type '2' to show the list of players by alphabetical order\n"
                  f"Type '3' to show the list of players by rating order\n"
                  f"Type '4' to create the next round\n"
+                 f"Type '5' to enter the scores\n"
                  f"Type '0' to go back to the main menu\n")
 
 
