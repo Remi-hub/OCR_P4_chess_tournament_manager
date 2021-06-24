@@ -1,4 +1,5 @@
 from models import data_base_manager as dbm
+from models.classes.tournament import Tournament
 
 
 def main_menu() -> str:
@@ -51,6 +52,7 @@ def tournament_menu():
                  f"Type '3' to show the list of players by rating order\n"
                  f"Type '4' to create the next round\n"
                  f"Type '5' to enter the scores\n"
+                 f"Type '6' to show scores\n"
                  f"Type '0' to go back to the main menu\n")
 
 
@@ -78,5 +80,5 @@ def error_message(display_error):
 
 def show_result(tournament_scores):
     for id, score in tournament_scores.items():
-        print(f'Player ID : {id}  -- Player {score}')
+        print(f'Player ID : {id}  --  Score : {score[0]}')
 
