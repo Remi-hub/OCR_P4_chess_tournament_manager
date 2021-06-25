@@ -4,8 +4,7 @@ from models.classes.match import Match
 
 
 class Tournament:
-
-    """Create a tournament with Name, Number of rounds, players, status, list of rounds and on_going round"""
+    """Model representing a tournament"""
     def __init__(self, id, name, time_control, description, total_number_of_rounds=4, ongoing_round=1,
                  players=None, status='initialisation',
                  list_of_rounds=None, scores=None, opponents=None):
@@ -30,9 +29,6 @@ class Tournament:
         self.time_control = time_control
         self.description = description
 
-
-
-
     def __str__(self):
         return f'{self.name}'
 
@@ -52,7 +48,6 @@ class Tournament:
 
         }
         return serialized_tournament
-
 
     def add_player(self, player):
         """adding player in our player list"""
@@ -80,10 +75,6 @@ class Tournament:
             self.ongoing_round += 1
 
         else:
-
-            # .items() pour créer une liste de tuple contenant la clef et la valeur de mon dict
-            # key=lambda sert de clef de tri avec le paramètre item: item[1] (score, rating)
-            #  item[1][0] correspond au score et item [1][1] correspond au rating
             sorted_players = sorted(self.scores.items(), key=lambda item: (item[1][0], item[1][1]), reverse=True)
             next_round = Round(f'round {self.ongoing_round} |', self.ongoing_round, [])
             self.list_of_rounds.append(next_round)
