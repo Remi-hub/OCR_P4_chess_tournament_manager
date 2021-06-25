@@ -53,12 +53,20 @@ class MainController:
                 tournament.list_of_rounds[-1].show_matches_in_round()
 
             elif response == '5':
-                tournament.end_round()
-                tournament.list_of_rounds[-1].show_matches_in_round()
+                if len(tournament.list_of_rounds) == 0:
+                    menu.error_message("No round has been played yet\n")
+                else:
+                    tournament.end_round()
+                    tournament.list_of_rounds[-1].show_matches_in_round()
+
+
+
+
+
+                # verifier qu'un round existe pour pouvoir entrer les scores
             # todo verifier qu'un round a été jouer pour entrer les scores
             # todo ne pas pouvoir rentrer deux fois les scores sur le meme rounds
             # todo créer une commande 5 qui permet de rentrer les scores sur les joueurs du tournois
-            # todo call la ligne 30 du main
             # todo avoir laffichage des scores qui s'udaptes, utiliser le score du Tournament ??
             # todo ne pas pouvoir faire plus que 4 rounds ?
             # tournament.list_of_rounds[-1].round_ended()
