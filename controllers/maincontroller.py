@@ -47,9 +47,12 @@ class MainController:
                 rounds = tournament.list_of_rounds
                 if len(rounds) and rounds[-1].ended_at is None:
                     menu.error_message("Previous round not over")
+                    tournament.list_of_rounds[-1].show_matches_in_round()
+                elif len(rounds) >= tournament.total_number_of_rounds:
+                    menu.error_message("Max number of rounds reached")
                 else:
                     tournament.compute_next_round()
-                tournament.list_of_rounds[-1].show_matches_in_round()
+                    tournament.list_of_rounds[-1].show_matches_in_round()
 
             elif response == '5':
                 if len(tournament.list_of_rounds) == 0:
@@ -62,7 +65,17 @@ class MainController:
                         menu.error_message("Scores already entered")
 
             elif response == '6':
-                menu.show_result(tournament.scores)
+                sorted_result = {key: value for key, value in
+                                 sorted(tournament.scores.items(), key=lambda item: item[1], reverse=True)}
+                menu.show_result(sorted_result)
+
+            elif response == '7':
+                menu.show_matches(tournament.list_of_rounds)
+
+            elif response == '8':
+                menu.show_rounds(tournament)
+
+
 
             elif response == '0':
                 exit_menu = True
@@ -184,11 +197,15 @@ class MainController:
                     menu.show_players(all_players)
 
             elif response == "5":
+                all_players = self.player_database
+                print(all_players)
+                # todo continuer a faire ça
                 pass
                     # pouvoir choisir un joueur par son ID et modifier son rating
 
             elif response == "6":
                 menu.show_tournaments(self.tournament_database)
+
             elif response == "0":
                 return
             else:

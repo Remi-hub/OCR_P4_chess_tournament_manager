@@ -11,6 +11,7 @@ def main_menu() -> str:
         f'Press "4" to show the list of all players.\n'
         f'Press "5" to change a player rating.\n'
         f'Press "6" to show the list of all tournaments.\n'
+        
         f'Press "0" to quit the program.\n'
     )
 
@@ -53,6 +54,8 @@ def tournament_menu():
                  f"Type '4' to create the next round\n"
                  f"Type '5' to enter the scores\n"
                  f"Type '6' to show scores\n"
+                 f"Type '7' to show matches \n"
+                 f"Type '8' to show rounds\n"
                  f"Type '0' to go back to the main menu\n")
 
 
@@ -82,3 +85,15 @@ def show_result(tournament_scores):
     for id, score in tournament_scores.items():
         print(f'Player ID : {id}  --  Score : {score[0]}')
 
+def show_matches(list_of_rounds):
+    for round in list_of_rounds:
+        print(round.round_name)
+        for match in round.list_of_matches:
+            print(match)
+
+def show_rounds(tournament):
+    for round in tournament.list_of_rounds:
+        print(f'{round.round_name} Round started at : {round.started_at} Round ended at : {round.ended_at}')
+
+def choose_player_by_id():
+    print('Type the ID of the player to modify his rating')

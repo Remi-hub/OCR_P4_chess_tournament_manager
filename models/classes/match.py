@@ -17,6 +17,9 @@ class Match:
                        f" '{self.id_player_2}' for Player 2,"
                        f" Or '0' if there's a draw\n")
                         # todo faire une verif sur les inputs
+                        # todo bouger model mvc; au lieu d'appeler match.scoring acutellement, tu vas appeler match.scoring(winner)
+
+
 
         if str(self.id_player_1) == winner:
             self.score_player_1 = 1

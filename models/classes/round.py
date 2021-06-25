@@ -1,14 +1,13 @@
 from datetime import datetime
 
-
 class Round:
 
-    def __init__(self, round_name, round_number, list_of_matches, started_at=0, ended_at=0):
+    def __init__(self, round_name, round_number, list_of_matches, started_at=None, ended_at=None):
         self.round_name = round_name
         self.round_number = int(round_number)
         self.list_of_matches = list_of_matches
-        self.started_at = datetime.now().strftime("%Y/%m/%d/%H:%M")
-        self.ended_at = None
+        self.started_at = started_at if started_at is not None else datetime.now().strftime("%Y/%m/%d/  %H:%M")
+        self.ended_at = ended_at
 
     def __str__(self):
         return f'{self.list_of_matches}'
