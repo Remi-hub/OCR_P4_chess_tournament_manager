@@ -9,7 +9,7 @@ def main_menu() -> str:
         f'Press "2" to create a new player.\n'
         f'Press "3" to manage the tournament of your choice\n'
         f'Press "4" to show the list of all players.\n'
-        # f'Press "5" to assign player to a tournament.\n'
+        f'Press "5" to change a player rating.\n'
         f'Press "6" to show the list of all tournaments.\n'
         f'Press "0" to quit the program.\n'
     )
