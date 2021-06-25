@@ -1,5 +1,5 @@
 class Player:
-
+    """Model representing a chess player in a tournament"""
     def __init__(self, id, firstname, lastname, gender, rating):
         self.id = id
         self.first_name = firstname
