@@ -2,7 +2,6 @@ from models import data_base_manager as dbm
 from views import menu
 from models.classes.tournament import Tournament
 from models.classes.player import Player
-from models.classes.round import Round
 
 
 class MainController:
@@ -56,38 +55,24 @@ class MainController:
                 if len(tournament.list_of_rounds) == 0:
                     menu.error_message("No round has been played yet\n")
                 else:
-                    tournament.end_round()
-                    tournament.list_of_rounds[-1].show_matches_in_round()
+                    if tournament.list_of_rounds[-1].ended_at is None:
+                        tournament.end_round()
+                        tournament.list_of_rounds[-1].show_matches_in_round()
+                    else:
+                        menu.error_message("Scores already entered")
 
-
-
-
-
-                # verifier qu'un round existe pour pouvoir entrer les scores
-            # todo verifier qu'un round a été jouer pour entrer les scores
-            # todo ne pas pouvoir rentrer deux fois les scores sur le meme rounds
-            # todo créer une commande 5 qui permet de rentrer les scores sur les joueurs du tournois
-            # todo avoir laffichage des scores qui s'udaptes, utiliser le score du Tournament ??
-            # todo ne pas pouvoir faire plus que 4 rounds ?
-            # tournament.list_of_rounds[-1].round_ended()
             elif response == '6':
                 menu.show_result(tournament.scores)
 
-                # todo afficher tous les scores
-                pass
-
             elif response == '0':
                 exit_menu = True
-
-# def launch_tournament(self):
-#     # todo proposer de lancer le tournoi ou de revenir au menu principale
-#     launch = get_tournament().compute_next_round()
 
     def run(self):
         while True:
             response = menu.main_menu()
             if response == "1":
                 tournament_name = ""
+                tournament_number_of_round = 4
                 tournament_time_control = ""
                 tournament_description = ""
                 valid_input = False
@@ -95,6 +80,16 @@ class MainController:
                     tournament_name = menu.ask_input('Enter the tournament name.\n')
                     if tournament_name == "":
                         menu.error_message('Name cannot be empty.\n')
+                    else:
+                        valid_input = True
+
+                valid_input = False
+                while not valid_input:
+                    tournament_number_of_round = menu.ask_input(f'Type the number of rounds desired (max 7)\n')
+                    if not tournament_number_of_round.isdecimal():
+                        menu.error_message("Must be integer")
+                    elif not int(tournament_number_of_round) in range(1, 8):
+                        menu.error_message("Insert a value between 1 and 7")
                     else:
                         valid_input = True
 
@@ -119,7 +114,9 @@ class MainController:
 
                 id = 0 if len(self.tournament_database) == 0 else self.tournament_database[-1].id
                 id += 1
-                tournament = Tournament(id, tournament_name, tournament_time_control, tournament_description)
+                tournament = Tournament(id, tournament_name,
+                                        tournament_time_control, tournament_description,
+                                        int(tournament_number_of_round))
                 dbm.insert_tournament(tournament)
                 self.tournament_database.append(tournament)
 
@@ -186,21 +183,9 @@ class MainController:
                     all_players = sorted(self.player_database, key=lambda player: player.get_rating(), reverse=True)
                     menu.show_players(all_players)
 
-            # elif response == "5":
-            #     tournament_id, player_id = menu.assign_players_to_tournament(self.tournament_database,
-            #                                                                  self.player_database)
-            #     current_tournament = None
-            #     for tournament in self.tournament_database:
-            #         if tournament.id == int(tournament_id):
-            #             current_tournament = tournament
-            #             break
-            #     current_player = None
-            #     for player in self.player_database:
-            #         if player.id == int(player_id):
-            #             current_player = player
-            #             break
-
-                # current_tournament.add_player(current_player)
+            elif response == "5":
+                pass
+                    # pouvoir choisir un joueur par son ID et modifier son rating
 
             elif response == "6":
                 menu.show_tournaments(self.tournament_database)
