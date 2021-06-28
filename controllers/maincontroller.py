@@ -34,6 +34,8 @@ class MainController:
                             menu.error_message('!!! Player already in the tournament !!! ')
                         else:
                             tournament.add_player(player)
+                            dbm.tournaments_table.truncate()
+                            dbm.multiple_insert_tournament_in_db(self.tournament_database)
                         break
             elif response == '2':
                 sorted_players = sorted(tournament.players, key=lambda item: item.get_name().upper())
@@ -75,12 +77,11 @@ class MainController:
             elif response == '8':
                 menu.show_rounds(tournament)
 
-
-
             elif response == '0':
                 exit_menu = True
 
     def run(self):
+        global player
         while True:
             response = menu.main_menu()
             if response == "1":
@@ -189,19 +190,35 @@ class MainController:
                 menu_response = menu.show_all_players()
 
                 if menu_response == '1':
+                    self.player_database = dbm.load_player_from_database()
                     all_players = sorted(self.player_database, key=lambda player: player.get_name().upper())
                     menu.show_players(all_players)
 
                 if menu_response == '2':
+                    self.player_database = dbm.load_player_from_database()
                     all_players = sorted(self.player_database, key=lambda player: player.get_rating(), reverse=True)
                     menu.show_players(all_players)
 
             elif response == "5":
                 all_players = self.player_database
-                print(all_players)
-                # todo continuer a faire ça
-                pass
+                menu.show_players(all_players)
+                id_player = menu.choose_player_by_id()
+                found = False
+                for player in all_players:
+                    if id_player == player.id:
+                        found = True
+                        new_rating = menu.change_player_rating()
+                        dbm.change_player_rating(player.id, new_rating)
+
+                if not found:
+                    menu.error_message("Please enter a valid ID\n")
+
+
+
                     # pouvoir choisir un joueur par son ID et modifier son rating
+                    # pouvoir selectionner un joueur via son ID
+                    # cibler le rating et pouvoir le modifier
+                    # sauvegarder le changement?
 
             elif response == "6":
                 menu.show_tournaments(self.tournament_database)
@@ -212,7 +229,3 @@ class MainController:
                 menu.error_message('Invalid choice.')
 
 
-
-
-    ###### quand tu passeras par l'étape d'ajouter des joueurs dans le tournoi
-            # tu devras truncate la table tournoi et réinsérer tout les tournois.

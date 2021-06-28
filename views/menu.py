@@ -85,15 +85,26 @@ def show_result(tournament_scores):
     for id, score in tournament_scores.items():
         print(f'Player ID : {id}  --  Score : {score[0]}')
 
+
 def show_matches(list_of_rounds):
     for round in list_of_rounds:
         print(round.round_name)
         for match in round.list_of_matches:
             print(match)
 
+
 def show_rounds(tournament):
     for round in tournament.list_of_rounds:
         print(f'{round.round_name} Round started at : {round.started_at} Round ended at : {round.ended_at}')
 
+
 def choose_player_by_id():
-    print('Type the ID of the player to modify his rating')
+    player_id = input('Type the ID of the player to modify his rating\n')
+    while not player_id.isdecimal():
+        print("Must be integer")
+        player_id = input('Type the ID of the player to modify his rating\n')
+    return int(player_id)
+
+def change_player_rating():
+    new_rating = input("What is the new rating for this player ?\n")
+    return int(new_rating)

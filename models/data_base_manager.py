@@ -1,4 +1,4 @@
-from tinydb import TinyDB
+from tinydb import TinyDB, Query
 from tinydb.table import Document
 from models.classes.player import Player
 from models.classes.match import Match
@@ -33,6 +33,15 @@ def insert_player_in_database(player):
     players_table.insert(Document(player.serialize(), doc_id=player.id))
 
 
+def insert_tournament(tournament):
+    tournaments_table.insert(tournament.serialize())
+
+
+def multiple_insert_tournament_in_db(tournaments):
+    for tournament in tournaments:
+        insert_tournament(tournament)
+
+
 def multiple_insert_player_in_db(players):
 
     for player in players:
@@ -51,7 +60,7 @@ def deserialize_tournament(tournament:Document):
     players = [deserialize_player(get_player(player_id)) for player_id in tournament['players']]
     status = tournament['status']
     list_of_rounds = [deserialize_round(round) for round in tournament['list_of_rounds']]
-    scores = tournament['scores']
+    scores = {int(key): values for key, values in tournament['scores'].items()}
     opponents = {int(key): values for key, values in tournament['opponents'].items()}
     time_control = tournament['time_control']
     description = tournament['description']
@@ -95,8 +104,7 @@ def load_tournament_from_database():
     return tournaments
 
 
-def insert_tournament(tournament):
-    tournaments_table.insert(tournament.serialize())
+
 
 
 def truncate_tournament():
@@ -105,3 +113,16 @@ def truncate_tournament():
 
 def truncate_player():
     players_table.truncate()
+
+
+def change_player_rating(player_id, new_rating):
+    players_table.update({'rating': new_rating}, doc_ids=[player_id])
+    players_table.all()
+
+# def save_tournament():
+#     tournaments_table.update({'id': }
+
+
+
+# quand tu passeras par l'étape d'ajouter des joueurs dans le tournoi
+# tu devras truncate la table tournoi et réinsérer tout les tournois.
