@@ -72,30 +72,34 @@ def tournament_menu_response_1():
     return int(player_selection)
 
 
-
-def create_player() -> str:
-    pass
-
-
 def error_message(display_error):
     print(display_error)
 
 
 def show_result(tournament_scores):
-    for id, score in tournament_scores.items():
-        print(f'Player ID : {id}  --  Score : {score[0]}')
+    if len(tournament_scores) >= 1:
+        for id, score in tournament_scores.items():
+            print(f'Player ID : {id}  --  Score : {score[0]}')
+    else:
+        print('No data to display\n')
 
 
 def show_matches(list_of_rounds):
-    for round in list_of_rounds:
-        print(round.round_name)
-        for match in round.list_of_matches:
-            print(match)
+    if len(list_of_rounds) >= 1:
+        for round in list_of_rounds:
+            print(round.round_name)
+            for match in round.list_of_matches:
+                print(match)
+    else:
+        print('No data to display\n')
 
 
 def show_rounds(tournament):
-    for round in tournament.list_of_rounds:
-        print(f'{round.round_name} Round started at : {round.started_at} Round ended at : {round.ended_at}')
+    if len(tournament.list_of_rounds) >= 1:
+        for round in tournament.list_of_rounds:
+            print(f'{round.round_name} Round started at : {round.started_at} Round ended at : {round.ended_at}')
+    else:
+        print('No data to display\n')
 
 
 def choose_player_by_id():
@@ -104,6 +108,7 @@ def choose_player_by_id():
         print("Must be integer")
         player_id = input('Type the ID of the player to modify his rating\n')
     return int(player_id)
+
 
 def change_player_rating():
     new_rating = input("What is the new rating for this player ?\n")

@@ -2,10 +2,29 @@ from models.classes.player import Player
 from models.classes.round import Round
 from models.classes.match import Match
 
+# Fonction qui parcourt toutes les possibilités de combinaisons de matchs:
+# Elle regarde toutes les paires de joueurs qu'elle peut faire avec le premier joueur,
+# puis pour chacune de ces paires, elle regarde ensuite quelles paires elle peut faire avec le premier joueur qui n'est pas encore attribué, et ainsi de suite (c'est le coté récursif: à chaque fois on rappelle la fonction avec les liste des joueurs restants)
+# Elle return la liste de matchs trouvée quand il n'y a plus assez de joueurs pour faire une nouvelle paire (len(players < 2)) ou quand elle tombe sur une paire qui a déjà joué ensemble (le else tout à la fin)
+def all_possibilities(players, opponents):
+        if len(players) < 2:
+            yield []
+            return
+        if len(players) % 2 == 1:
+            return [] #la liste de joueurs doit être un nombre pair pour que ca marche
+        else:
+            a = players[0]
+            for i in range(1,len(players)):
+                if not players[i][0] in opponents[a[0]]:
+                    pair = (a,players[i])
+                    for rest in all_possibilities(players[1:i]+players[i+1:], opponents):
+                        yield [pair] + rest
+                else:
+                    yield []
 
 class Tournament:
     """Model representing a tournament"""
-    def __init__(self, id, name, time_control, description, total_number_of_rounds=4, ongoing_round=1,
+    def __init__(self, id, name, date, time_control, description, total_number_of_rounds=4, ongoing_round=1,
                  players=None, status='initialisation',
                  list_of_rounds=None, scores=None, opponents=None):
         if opponents is None:
@@ -19,6 +38,7 @@ class Tournament:
 
         self.id = id
         self.name = name
+        self.date = date
         self.total_number_of_rounds = total_number_of_rounds
         self.ongoing_round = ongoing_round
         self.players = players
@@ -36,6 +56,7 @@ class Tournament:
 
         serialized_tournament = {
             'name': self.name,
+            'date': self.date,
             'total_number_of_rounds': self.total_number_of_rounds,
             'ongoing_round': self.ongoing_round,
             'players': [player.id for player in self.players],
@@ -76,9 +97,32 @@ class Tournament:
 
         else:
             sorted_players = sorted(self.scores.items(), key=lambda item: (item[1][0], item[1][1]), reverse=True)
-            next_round = Round(f'round {self.ongoing_round} |', self.ongoing_round, [])
+
+            # >>>> début changement
+            # on va créer la liste de matchs, donc on commence avec une liste vide
+            list_of_matches = []
+            # on utilise notre fonction tout en haut pour chercher les combinaisons possibles de matchs
+            possiblities = all_possibilities(sorted_players, self.opponents)
+            # des prints juste pour test, tu peux les virer quand tu as compris
+            print(sorted_players)
+            print("--")
+            for possibility in possiblities:
+                # On vérifie les listes de paires renvoyées une par une et on regarde (ci-dessous) si le nombre de paires correspond bien au nombre de matchs qu'il nous faut
+                # En effet, la fonction all_possibilities renvoit un nombre insuffisant de paires qd une paire a déjà joué ensemble. exemple, elle va renvoyer [(joueur1, joueur2), (joueur3,joueur4)] si les joueurs 5 et 6 ont déja joué ensemble
+                if len(possibility) == len(self.players)//2:
+                    print(possibility)
+                    # Si on a bien le bon nombre de matchs, on convertit chaque paire en match et on l'ajoute à la liste de matchs
+                    for pair in possibility:
+                        match = Match('on going', pair[0][0], pair[1][0])
+                        list_of_matches.append(match)
+                    # Dès qu'on a trouvé la première liste de matchs satisfaisante, on arrete de chercher et on sort de la boucle
+                    break
+            next_round = Round(f'round {self.ongoing_round} |', self.ongoing_round, list_of_matches)
+
+            # <<<< fin changement (et j'ai commenté les 2 lignes ci-dessous qui étaient l'ancien fonctionnement)
+            #next_round = Round(f'round {self.ongoing_round} |', self.ongoing_round, [])
             self.list_of_rounds.append(next_round)
-            self.create_match(sorted_players)
+            #self.create_match(sorted_players)
             self.add_opponent()
             self.ongoing_round += 1
 
@@ -90,17 +134,17 @@ class Tournament:
             if not self.opponents[match.id_player_2].count(match.id_player_1):
                 self.opponents[match.id_player_2].append(match.id_player_1)
 
-    def create_match(self, sorted_players):
-        selected_players = []
-        for player_1 in sorted_players:
-            for player_2 in sorted_players:
-                if player_1 != player_2:
-                    if player_2[0] not in self.opponents[player_1[0]]:
-                        if player_1 not in selected_players and player_2 not in selected_players:
-                            selected_players += [player_1, player_2]
-                            self.list_of_rounds[self.ongoing_round - 1].list_of_matches.append(
-                                Match('on_going', player_1[0], player_2[0])
-                            )
+    # def create_match(self, sorted_players):
+    #     selected_players = []
+    #     for player_1 in sorted_players:
+    #         for player_2 in sorted_players:
+    #             if player_1 != player_2:
+    #                 if player_2[0] not in self.opponents[player_1[0]]:
+    #                     if player_1 not in selected_players and player_2 not in selected_players:
+    #                         selected_players += [player_1, player_2]
+    #                         self.list_of_rounds[self.ongoing_round - 1].list_of_matches.append(
+    #                             Match('on_going', player_1[0], player_2[0])
+    #                         )
 
     def end_round(self):
         self.list_of_rounds[-1].round_ended()

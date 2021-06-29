@@ -34,8 +34,7 @@ class MainController:
                             menu.error_message('!!! Player already in the tournament !!! ')
                         else:
                             tournament.add_player(player)
-                            dbm.tournaments_table.truncate()
-                            dbm.multiple_insert_tournament_in_db(self.tournament_database)
+                            dbm.save_tournament(self.tournament_database)
                         break
             elif response == '2':
                 sorted_players = sorted(tournament.players, key=lambda item: item.get_name().upper())
@@ -55,6 +54,7 @@ class MainController:
                 else:
                     tournament.compute_next_round()
                     tournament.list_of_rounds[-1].show_matches_in_round()
+                    dbm.save_tournament(self.tournament_database)
 
             elif response == '5':
                 if len(tournament.list_of_rounds) == 0:
@@ -63,6 +63,7 @@ class MainController:
                     if tournament.list_of_rounds[-1].ended_at is None:
                         tournament.end_round()
                         tournament.list_of_rounds[-1].show_matches_in_round()
+                        dbm.save_tournament(self.tournament_database)
                     else:
                         menu.error_message("Scores already entered")
 
@@ -81,11 +82,11 @@ class MainController:
                 exit_menu = True
 
     def run(self):
-        global player
         while True:
             response = menu.main_menu()
             if response == "1":
                 tournament_name = ""
+                tournament_date = ""
                 tournament_number_of_round = 4
                 tournament_time_control = ""
                 tournament_description = ""
@@ -93,7 +94,15 @@ class MainController:
                 while not valid_input:
                     tournament_name = menu.ask_input('Enter the tournament name.\n')
                     if tournament_name == "":
-                        menu.error_message('Name cannot be empty.\n')
+                        menu.error_message('Name field cannot be empty.\n')
+                    else:
+                        valid_input = True
+
+                valid_input = False
+                while not valid_input:
+                    tournament_date = menu.ask_input('Enter dates for the tournament. ex: mm/dd/YYYY to mm/dd/YYYY\n')
+                    if tournament_date == "":
+                        menu.error_message('Date field cannot be empty.\n')
                     else:
                         valid_input = True
 
@@ -128,7 +137,7 @@ class MainController:
 
                 id = 0 if len(self.tournament_database) == 0 else self.tournament_database[-1].id
                 id += 1
-                tournament = Tournament(id, tournament_name,
+                tournament = Tournament(id, tournament_name, tournament_date,
                                         tournament_time_control, tournament_description,
                                         int(tournament_number_of_round))
                 dbm.insert_tournament(tournament)
@@ -212,13 +221,6 @@ class MainController:
 
                 if not found:
                     menu.error_message("Please enter a valid ID\n")
-
-
-
-                    # pouvoir choisir un joueur par son ID et modifier son rating
-                    # pouvoir selectionner un joueur via son ID
-                    # cibler le rating et pouvoir le modifier
-                    # sauvegarder le changement?
 
             elif response == "6":
                 menu.show_tournaments(self.tournament_database)
