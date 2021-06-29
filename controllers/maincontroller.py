@@ -60,9 +60,13 @@ class MainController:
                 if len(tournament.list_of_rounds) == 0:
                     menu.error_message("No round has been played yet\n")
                 else:
-                    if tournament.list_of_rounds[-1].ended_at is None:
+                    last_round = tournament.list_of_rounds[-1]
+                    if last_round.ended_at is None:
+                        for match in last_round.list_of_matches:
+                            winner = menu.ask_winner(match)
+                            match.scoring(winner)
                         tournament.end_round()
-                        tournament.list_of_rounds[-1].show_matches_in_round()
+                        last_round.show_matches_in_round()
                         dbm.save_tournament(self.tournament_database)
                     else:
                         menu.error_message("Scores already entered")

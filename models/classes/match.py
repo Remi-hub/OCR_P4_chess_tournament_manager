@@ -11,13 +11,7 @@ class Match:
         return f'Player {self.id_player_1} ({self.score_player_1} pts) -- VS -- ' \
                f'Player {self.id_player_2} ({self.score_player_2} pts)'
 
-    def scoring(self):
-        winner = input(f"Who won the match ? Type "
-                       f" '{self.id_player_1}' for player 1,"
-                       f" '{self.id_player_2}' for Player 2,"
-                       f" Or '0' if there's a draw\n")
-                        # todo faire une verif sur les inpouts
-                        # todo bouger model mvc; au lieu d'appeler match.scoring acutellement, tu vas appeler match.scoring(winner)
+    def scoring(self, winner):
 
         if str(self.id_player_1) == winner:
             self.score_player_1 = 1

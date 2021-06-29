@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Round:
 
     def __init__(self, round_name, round_number, list_of_matches, started_at=None, ended_at=None):
@@ -14,8 +15,7 @@ class Round:
 
     def round_ended(self):
         self.ended_at = datetime.now().strftime("%Y/%m/%d/%H:%M")
-        for match in self.list_of_matches:
-            match.scoring()
+
 
     def show_matches_in_round(self):
         for match in self.list_of_matches:

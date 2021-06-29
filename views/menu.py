@@ -16,6 +16,17 @@ def main_menu() -> str:
     )
 
 
+def ask_winner(match):
+    while True:
+        winner = input(f"Type '{match.id_player_1}' if player 1 won\n"
+                       f"Type '{match.id_player_2}' if player 2 won\n"
+                       f"Type '0' if there is a draw \n")
+        if not winner.isdecimal():
+            print("message")
+            continue
+        return int(winner)
+
+
 def ask_input(question):
     return input(question)
 
