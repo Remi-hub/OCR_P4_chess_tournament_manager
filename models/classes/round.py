@@ -2,6 +2,7 @@ from datetime import datetime
 
 
 class Round:
+    """Model representing our rounds"""
 
     def __init__(self, round_name, round_number, list_of_matches, started_at=None, ended_at=None):
         self.round_name = round_name
@@ -15,7 +16,6 @@ class Round:
 
     def round_ended(self):
         self.ended_at = datetime.now().strftime("%Y/%m/%d/%H:%M")
-
 
     def show_matches_in_round(self):
         for match in self.list_of_matches:

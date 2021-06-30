@@ -5,12 +5,14 @@ from models.classes.player import Player
 
 
 class MainController:
+    """Bring together information from the view and the models"""
 
     def __init__(self):
         self.player_database = dbm.load_player_from_database()
         self.tournament_database = dbm.load_tournament_from_database()
 
     def get_tournament(self):
+        """Get the tournament which matches the doc id"""
         tournament_id = menu.choose_tournament(self.tournament_database)
         for tournament in self.tournament_database:
             if tournament.id == int(tournament_id):
@@ -19,6 +21,7 @@ class MainController:
         return None
 
     def show_menu_tournament(self, tournament):
+        """Display the choice you can make once you picked a tournament"""
         exit_menu = False
         while not exit_menu:
             response = menu.tournament_menu()
@@ -63,8 +66,12 @@ class MainController:
                     last_round = tournament.list_of_rounds[-1]
                     if last_round.ended_at is None:
                         for match in last_round.list_of_matches:
-                            winner = menu.ask_winner(match)
-                            match.scoring(winner)
+                            while True:
+                                winner = menu.ask_winner(match)
+                                if winner == match.id_player_1 or winner == match.id_player_2 or winner == 0:
+                                    match.scoring(winner)
+                                    break
+                                menu.error_message('Must select player ID or 0 for draw')
                         tournament.end_round()
                         last_round.show_matches_in_round()
                         dbm.save_tournament(self.tournament_database)
@@ -85,7 +92,8 @@ class MainController:
             elif response == '0':
                 exit_menu = True
 
-    def run(self):
+    def show_main_menu(self):
+        """Display the choice you can do when you start the program"""
         while True:
             response = menu.main_menu()
             if response == "1":

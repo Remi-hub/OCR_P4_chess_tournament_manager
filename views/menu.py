@@ -1,8 +1,5 @@
-from models import data_base_manager as dbm
-from models.classes.tournament import Tournament
-# ceci est la branche test
-
 def main_menu() -> str:
+    """Gathering input from the user"""
     return input(
         f'Hello, welcome to the tournament manager !\nWhat do you want to do? \n'
         f'Press "1" to create a new tournament.\n'
@@ -17,12 +14,13 @@ def main_menu() -> str:
 
 
 def ask_winner(match):
+    """asking the user the winner of a match"""
     while True:
         winner = input(f"Type '{match.id_player_1}' if player 1 won\n"
                        f"Type '{match.id_player_2}' if player 2 won\n"
                        f"Type '0' if there is a draw \n")
         if not winner.isdecimal():
-            print("message")
+            print("Must be integer")
             continue
         return int(winner)
 
@@ -59,6 +57,7 @@ def choose_tournament(tournament):
 
 
 def tournament_menu():
+    """Display the menu for a tournament"""
     return input(f"Type '1' to add a player to the tournament\n"
                  f"Type '2' to show the list of players by alphabetical order\n"
                  f"Type '3' to show the list of players by rating order\n"
@@ -76,6 +75,7 @@ def show_all_players():
 
 
 def tournament_menu_response_1():
+    """display a submenu for the choice number 1 of tournament_menu"""
     player_selection = input('Enter the player ID\n')
     while not player_selection.isdecimal():
         print('Must be integer')

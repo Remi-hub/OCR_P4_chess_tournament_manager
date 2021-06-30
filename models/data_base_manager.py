@@ -70,11 +70,11 @@ def deserialize_round(round:Document):
 
 
 def deserialize_match(match:Document):
-    status = match[0]
-    id_player_1 = match[1]
-    id_player_2 = match[2]
-    score_player_1 = match[3]
-    score_player_2 = match[4]
+    status = match['status']
+    id_player_1 = match['id_player_1']
+    id_player_2 = match['id_player_2']
+    score_player_1 = match['score_player_1']
+    score_player_2 = match['score_player_2']
     return Match(status, id_player_1, id_player_2, score_player_1, score_player_2)
 
 
