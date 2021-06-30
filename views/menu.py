@@ -1,15 +1,15 @@
 def main_menu() -> str:
     """Gathering input from the user"""
     return input(
-        f'Hello, welcome to the tournament manager !\nWhat do you want to do? \n'
-        f'Press "1" to create a new tournament.\n'
-        f'Press "2" to create a new player.\n'
-        f'Press "3" to manage the tournament of your choice\n'
-        f'Press "4" to show the list of all players.\n'
-        f'Press "5" to change a player rating.\n'
-        f'Press "6" to show the list of all tournaments.\n'
-        
-        f'Press "0" to quit the program.\n'
+        'Hello, welcome to the tournament manager !'
+        '\nWhat do you want to do? \n'
+        'Press "1" to create a new tournament.\n'
+        'Press "2" to create a new player.\n'
+        'Press "3" to manage the tournament of your choice\n'
+        'Press "4" to show the list of all players.\n'
+        'Press "5" to change a player rating.\n'
+        'Press "6" to show the list of all tournaments.\n'
+        'Press "0" to quit the program.\n'
     )
 
 
@@ -36,7 +36,8 @@ def show_tournaments(all_tournament):
 
 def show_players(all_players):
     for player in all_players:
-        print(f"Player ID: {player.id} - Name: {player.first_name} {player.last_name} -  Rating : {player.rating}")
+        print(f"Player ID: {player.id} - Name: {player.first_name}"
+              f" {player.last_name} -  Rating : {player.rating}")
 
 
 def assign_players_to_tournament(all_tournament, all_players):
@@ -58,20 +59,22 @@ def choose_tournament(tournament):
 
 def tournament_menu():
     """Display the menu for a tournament"""
-    return input(f"Type '1' to add a player to the tournament\n"
-                 f"Type '2' to show the list of players by alphabetical order\n"
-                 f"Type '3' to show the list of players by rating order\n"
-                 f"Type '4' to create the next round\n"
-                 f"Type '5' to enter the scores\n"
-                 f"Type '6' to show scores\n"
-                 f"Type '7' to show matches \n"
-                 f"Type '8' to show rounds\n"
-                 f"Type '0' to go back to the main menu\n")
+    return input("Type '1' to add a player to the tournament\n"
+                 "Type '2' to show the list of players by alphabetical order\n"
+                 "Type '3' to show the list of players by rating order\n"
+                 "Type '4' to create the next round\n"
+                 "Type '5' to enter the scores\n"
+                 "Type '6' to show scores\n"
+                 "Type '7' to show matches \n"
+                 "Type '8' to show rounds\n"
+                 "Type '0' to go back to the main menu\n")
 
 
 def show_all_players():
-    return input(f"Type '1' to show the list of all the players by alphabetical order \n"
-                 f"Type '2' to show the list of all the players by rating order\n")
+    return input("Type '1' to show the list of all the players by"
+                 " alphabetical order \n"
+                 "Type '2' to show the list of all the players by"
+                 " rating order\n")
 
 
 def tournament_menu_response_1():
@@ -108,7 +111,8 @@ def show_matches(list_of_rounds):
 def show_rounds(tournament):
     if len(tournament.list_of_rounds) >= 1:
         for round in tournament.list_of_rounds:
-            print(f'{round.round_name} Round started at : {round.started_at} Round ended at : {round.ended_at}')
+            print(f'{round.round_name} Round started at :'
+                  f' {round.started_at} Round ended at : {round.ended_at}')
     else:
         print('No data to display\n')
 

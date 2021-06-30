@@ -43,42 +43,49 @@ def get_player(id):
     return players_table.get(doc_id=int(id))
 
 
-def deserialize_tournament(tournament:Document):
+def deserialize_tournament(tournament: Document):
     tournament_id = tournament.doc_id
     name = tournament['name']
     date = tournament['date']
     total_number_of_rounds = tournament['total_number_of_rounds']
     ongoing_round = tournament['ongoing_round']
-    players = [deserialize_player(get_player(player_id)) for player_id in tournament['players']]
+    players = [deserialize_player(get_player(player_id)) for
+               player_id in tournament['players']]
     status = tournament['status']
-    list_of_rounds = [deserialize_round(round) for round in tournament['list_of_rounds']]
+    list_of_rounds = [deserialize_round(round) for
+                      round in tournament['list_of_rounds']]
     scores = {int(key): values for key, values in tournament['scores'].items()}
-    opponents = {int(key): values for key, values in tournament['opponents'].items()}
+    opponents = {int(key): values for
+                 key, values in tournament['opponents'].items()}
     time_control = tournament['time_control']
     description = tournament['description']
-    return Tournament(tournament_id, name, date, time_control, description, total_number_of_rounds, ongoing_round, players,
+    return Tournament(tournament_id, name, date, time_control, description,
+                      total_number_of_rounds, ongoing_round, players,
                       status, list_of_rounds, scores, opponents)
 
 
-def deserialize_round(round:Document):
+def deserialize_round(round: Document):
     round_name = round['round_name']
     round_number = round['round_number']
-    list_of_matches = [deserialize_match(match) for match in round['list_of_matches']]
+    list_of_matches = [deserialize_match(match) for
+                       match in round['list_of_matches']]
     started_at = round['started_at']
     ended_at = round['ended_at']
-    return Round(round_name, round_number, list_of_matches, started_at, ended_at)
+    return Round(round_name, round_number,
+                 list_of_matches, started_at, ended_at)
 
 
-def deserialize_match(match:Document):
+def deserialize_match(match: Document):
     status = match['status']
     id_player_1 = match['id_player_1']
     id_player_2 = match['id_player_2']
     score_player_1 = match['score_player_1']
     score_player_2 = match['score_player_2']
-    return Match(status, id_player_1, id_player_2, score_player_1, score_player_2)
+    return Match(status, id_player_1, id_player_2,
+                 score_player_1, score_player_2)
 
 
-def deserialize_player(player:Document):
+def deserialize_player(player: Document):
     first_name = player['first_name']
     last_name = player['last_name']
     gender = player['gender']

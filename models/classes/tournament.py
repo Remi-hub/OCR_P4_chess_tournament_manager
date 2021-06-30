@@ -14,7 +14,8 @@ def all_possibilities(players, opponents):
         for i in range(1, len(players)):
             if not players[i][0] in opponents[a[0]]:
                 pair = (a, players[i])
-                for rest in all_possibilities(players[1:i]+players[i+1:], opponents):
+                for rest in all_possibilities(players[1:i]+players[i+1:],
+                                              opponents):
                     yield [pair] + rest
             else:
                 yield []
@@ -22,7 +23,8 @@ def all_possibilities(players, opponents):
 
 class Tournament:
     """Model representing a tournament"""
-    def __init__(self, id, name, date, time_control, description, total_number_of_rounds=4, ongoing_round=1,
+    def __init__(self, id, name, date, time_control, description,
+                 total_number_of_rounds=4, ongoing_round=1,
                  players=None, status='initialisation',
                  list_of_rounds=None, scores=None, opponents=None):
         if opponents is None:
@@ -59,7 +61,8 @@ class Tournament:
             'ongoing_round': self.ongoing_round,
             'players': [player.id for player in self.players],
             'status': self.status,
-            'list_of_rounds': [round.serialize() for round in self.list_of_rounds],
+            'list_of_rounds': [round.serialize() for
+                               round in self.list_of_rounds],
             'scores': self.scores,
             'opponents': self.opponents,
             'time_control': self.time_control,
@@ -75,9 +78,11 @@ class Tournament:
         self.opponents[player.id] = []
 
     def compute_next_round(self):
-        """matching players for the next turn, based on ranking for the first round, then by score"""
+        """matching players for the next turn,
+         based on ranking for the first round, then by score"""
         if self.ongoing_round == 1:
-            self.players = sorted(self.players, key=Player.get_rating, reverse=True)
+            self.players = sorted(self.players, key=Player.get_rating,
+                                  reverse=True)
             first_half = self.players[:4]
             second_half = self.players[4:]
             list_of_matches = []
@@ -90,7 +95,9 @@ class Tournament:
             self.ongoing_round += 1
 
         else:
-            sorted_players = sorted(self.scores.items(), key=lambda item: (item[1][0], item[1][1]), reverse=True)
+            sorted_players = sorted(self.scores.items(),
+                                    key=lambda item: (item[1][0], item[1][1]),
+                                    reverse=True)
             list_of_matches = []
             possibilities = all_possibilities(sorted_players, self.opponents)
             for possibility in possibilities:
@@ -100,7 +107,8 @@ class Tournament:
                         match = Match('on going', pair[0][0], pair[1][0])
                         list_of_matches.append(match)
                     break
-            next_round = Round(f'round {self.ongoing_round} |', self.ongoing_round, list_of_matches)
+            next_round = Round(f'round {self.ongoing_round} |',
+                               self.ongoing_round, list_of_matches)
             self.list_of_rounds.append(next_round)
             self.add_opponent()
             self.ongoing_round += 1

@@ -8,7 +8,8 @@ class Player:
         self.rating = int(rating)
 
     def __str__(self):
-        return f' ID # {self.id} - {self.first_name} {self.last_name} - Rating # {self.rating}'
+        return f' ID # {self.id} - {self.first_name} ' \
+               f'{self.last_name} - Rating # {self.rating}'
 
     def get_rating(self):
         return self.rating
