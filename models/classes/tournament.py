@@ -3,22 +3,29 @@ from models.classes.round import Round
 from models.classes.match import Match
 
 
-def all_possibilities(players, opponents):
-    if len(players) < 2:
-        yield []
-        return
+def get_matches(players, opponents):
+    # check si la longueur de la liste des players est pair, si elle est impair
+    # on renvoi une liste vide pour eviter les erreurs (nombre impair de joueur pour faire un match)
     if len(players) % 2 == 1:
         return []
-    else:
-        a = players[0]
-        for i in range(1, len(players)):
-            if not players[i][0] in opponents[a[0]]:
-                pair = (a, players[i])
-                for rest in all_possibilities(players[1:i]+players[i+1:],
-                                              opponents):
-                    yield [pair] + rest
-            else:
-                yield []
+    if len(players) == 0:
+        return []
+    first_player = players[0]
+    # fait une boucle qui commence du deuxieme index de la liste player jusqu'a la fin de la liste player
+    for player in players[1:]:
+        # si l'id de player n'est pas dans la liste des opponents du premier joueur
+        if not player[0] in opponents[first_player[0]]:
+            # creation d'une paire qui va contenir notre premier joueur et le joueur ' player ' (de la boucle for, le joueur ' actif ')
+            pair = (first_player, player)
+            # creation de la liste remaining players sauf le premier player
+            remaining_players = players[1:]
+            # mise à jour de la liste remaining players en enlevant le player (de la variable pair)
+            remaining_players.remove(player)
+            # association de la paire avec les paires restantes
+            matches = get_matches(remaining_players, opponents)
+            # si matches return none c'est qu'il n'y a pas de possiblitées alors on passe joueur suivant
+            if matches:
+                return [pair] + matches
 
 
 class Tournament:
@@ -99,14 +106,10 @@ class Tournament:
                                     key=lambda item: (item[1][0], item[1][1]),
                                     reverse=True)
             list_of_matches = []
-            possibilities = all_possibilities(sorted_players, self.opponents)
-            for possibility in possibilities:
-                if len(possibility) == len(self.players)//2:
-                    print(possibility)
-                    for pair in possibility:
-                        match = Match('on going', pair[0][0], pair[1][0])
-                        list_of_matches.append(match)
-                    break
+            possibility = get_matches(sorted_players, self.opponents)
+            for pair in possibility:
+                match = Match('on going', pair[0][0], pair[1][0])
+                list_of_matches.append(match)
             next_round = Round(f'round {self.ongoing_round} |',
                                self.ongoing_round, list_of_matches)
             self.list_of_rounds.append(next_round)
