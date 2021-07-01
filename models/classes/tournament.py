@@ -4,27 +4,18 @@ from models.classes.match import Match
 
 
 def get_matches(players, opponents):
-    # check si la longueur de la liste des players est pair, si elle est impair
-    # on renvoi une liste vide pour eviter les erreurs (nombre impair de joueur pour faire un match)
     if len(players) % 2 == 1:
         return []
     if len(players) == 0:
         return []
     first_player = players[0]
-    # fait une boucle qui commence du deuxieme index de la liste player jusqu'a la fin de la liste player
     for player in players[1:]:
-        # si l'id de player n'est pas dans la liste des opponents du premier joueur
         if not player[0] in opponents[first_player[0]]:
-            # creation d'une paire qui va contenir notre premier joueur et le joueur ' player ' (de la boucle for, le joueur ' actif ')
             pair = (first_player, player)
-            # creation de la liste remaining players sauf le premier player
             remaining_players = players[1:]
-            # mise à jour de la liste remaining players en enlevant le player (de la variable pair)
             remaining_players.remove(player)
-            # association de la paire avec les paires restantes
             matches = get_matches(remaining_players, opponents)
-            # si matches return none c'est qu'il n'y a pas de possiblitées alors on passe joueur suivant
-            if matches:
+            if matches is not None:
                 return [pair] + matches
 
 
