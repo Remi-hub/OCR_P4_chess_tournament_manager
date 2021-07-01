@@ -4,6 +4,7 @@ from models.classes.match import Match
 
 
 def get_matches(players, opponents):
+    """recursive function to get matches for round 2 and more"""
     if len(players) % 2 == 1:
         return []
     if len(players) == 0:
