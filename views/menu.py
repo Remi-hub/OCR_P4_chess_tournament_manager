@@ -89,6 +89,9 @@ def tournament_menu_response_1():
 def error_message(display_error):
     print(display_error)
 
+def show_message(message):
+    print(message)
+
 
 def show_result(tournament_scores):
     if len(tournament_scores) >= 1:

@@ -226,7 +226,7 @@ class MainController:
 
             elif response == "3":
                 tournament = self.get_tournament()
-                print(f'Tournament name : {tournament}')
+                menu.show_message(f'Tournament name : {tournament}')
                 if tournament is not None:
                     self.show_menu_tournament(tournament)
 
