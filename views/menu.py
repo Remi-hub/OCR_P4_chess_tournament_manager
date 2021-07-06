@@ -1,8 +1,8 @@
 def main_menu() -> str:
     """Gathering input from the user"""
     return input(
-        'Hello, welcome to the tournament manager !'
-        '\nWhat do you want to do? \n'
+        'Hello, welcome to the tournament manager !\n'
+        'What do you want to do? \n'
         'Press "1" to create a new tournament.\n'
         'Press "2" to create a new player.\n'
         'Press "3" to manage the tournament of your choice\n'
