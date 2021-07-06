@@ -89,6 +89,7 @@ def tournament_menu_response_1():
 def error_message(display_error):
     print(display_error)
 
+
 def show_message(message):
     print(message)
 
@@ -130,4 +131,7 @@ def choose_player_by_id():
 
 def change_player_rating():
     new_rating = input("What is the new rating for this player ?\n")
+    while not new_rating.isdecimal():
+        print("Must be integer")
+        new_rating = input("What is the new rating for this player ?\n")
     return int(new_rating)
