@@ -15,9 +15,9 @@ def get_matches(players, opponents):
             pair = (first_player, player)
             remaining_players = players[1:]
             remaining_players.remove(player)
-            matches = get_matches(remaining_players, opponents)
-            if matches is not None:
-                return [pair] + matches
+            pairs = get_matches(remaining_players, opponents)
+            if pairs is not None:
+                return [pair] + pairs
 
 
 class Tournament:
@@ -98,8 +98,8 @@ class Tournament:
                                     key=lambda item: (item[1][0], item[1][1]),
                                     reverse=True)
             list_of_matches = []
-            possibility = get_matches(sorted_players, self.opponents)
-            for pair in possibility:
+            matches = get_matches(sorted_players, self.opponents)
+            for pair in matches:
                 match = Match('on going', pair[0][0], pair[1][0])
                 list_of_matches.append(match)
             next_round = Round(f'round {self.ongoing_round} |',
