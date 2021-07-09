@@ -25,7 +25,7 @@ class MainController:
         exit_menu = False
         while not exit_menu:
             response = menu.tournament_menu()
-            if response == '1':
+            if response == '1':  # adding player to the tournament
                 if len(tournament.players) == 8:
                     menu.error_message('Tournament is full')
                     return
@@ -40,19 +40,19 @@ class MainController:
                             tournament.add_player(player)
                             dbm.save_tournament(self.tournament_database)
                         break
-            elif response == '2':
+            elif response == '2':  # players by alphabetical order
                 sorted_players = \
                     sorted(tournament.players,
                            key=lambda item: item.get_name().upper())
                 menu.show_players(sorted_players)
 
-            elif response == '3':
+            elif response == '3':  # players by rating
                 sorted_players = \
                     sorted(tournament.players,
                            key=lambda item: item.get_rating(), reverse=True)
                 menu.show_players(sorted_players)
 
-            elif response == '4':
+            elif response == '4':  # create the next round
                 rounds = tournament.list_of_rounds
                 if len(rounds) and rounds[-1].ended_at is None:
                     menu.error_message("Previous round not over")
@@ -64,7 +64,7 @@ class MainController:
                     tournament.list_of_rounds[-1].show_matches_in_round()
                     dbm.save_tournament(self.tournament_database)
 
-            elif response == '5':
+            elif response == '5':  # enter the scores
                 if len(tournament.list_of_rounds) == 0:
                     menu.error_message("No round has been played yet\n")
                 else:
@@ -86,27 +86,27 @@ class MainController:
                     else:
                         menu.error_message("Scores already entered")
 
-            elif response == '6':
+            elif response == '6':  # show scores
                 sorted_result = {key: value for key, value in
                                  sorted(tournament.scores.items(),
                                         key=lambda item: item[1],
                                         reverse=True)}
                 menu.show_result(sorted_result)
 
-            elif response == '7':
+            elif response == '7':  # show matches
                 menu.show_matches(tournament.list_of_rounds)
 
-            elif response == '8':
+            elif response == '8':  # show rounds
                 menu.show_rounds(tournament)
 
-            elif response == '0':
+            elif response == '0':  # back to main menu
                 exit_menu = True
 
     def show_main_menu(self):
         """Display the choice you can do when you start the program"""
         while True:
             response = menu.main_menu()
-            if response == "1":
+            if response == "1":  # create new tournament
                 tournament_name = ""
                 tournament_date = ""
                 tournament_number_of_round = 4
@@ -174,7 +174,7 @@ class MainController:
                 dbm.insert_tournament(tournament)
                 self.tournament_database.append(tournament)
 
-            elif response == "2":
+            elif response == "2":  # create new player
                 player_first_name = ""
                 player_last_name = ""
                 player_gender = ""
@@ -224,23 +224,23 @@ class MainController:
                 dbm.insert_player_in_database(player)
                 self.player_database.append(player)
 
-            elif response == "3":
+            elif response == "3":  # select the tournament to manage
                 tournament = self.get_tournament()
                 menu.show_message(f'Tournament name : {tournament}')
                 if tournament is not None:
                     self.show_menu_tournament(tournament)
 
-            elif response == "4":
+            elif response == "4":  # show list of players
                 menu_response = menu.show_all_players()
 
-                if menu_response == '1':
+                if menu_response == '1':    # players by alphabetical order
                     self.player_database = dbm.load_player_from_database()
                     all_players = sorted(
                             self.player_database,
                             key=lambda player: player.get_name().upper())
                     menu.show_players(all_players)
 
-                if menu_response == '2':
+                if menu_response == '2':    # players by rating
                     self.player_database = dbm.load_player_from_database()
                     all_players = sorted(
                             self.player_database,
@@ -248,7 +248,7 @@ class MainController:
                             reverse=True)
                     menu.show_players(all_players)
 
-            elif response == "5":
+            elif response == "5":   # change player rating
                 all_players = self.player_database
                 menu.show_players(all_players)
                 id_player = menu.choose_player_by_id()
@@ -262,10 +262,10 @@ class MainController:
                 if not found:
                     menu.error_message("Please enter a valid ID\n")
 
-            elif response == "6":
+            elif response == "6":   # show list of all tournaments
                 menu.show_tournaments(self.tournament_database)
 
-            elif response == "0":
+            elif response == "0":   # quit the program
                 return
             else:
                 menu.error_message('Invalid choice.')

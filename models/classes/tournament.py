@@ -5,9 +5,9 @@ from models.classes.match import Match
 
 def get_matches(players, opponents):
     """recursive function to get matches for round 2 and more"""
-    if len(players) % 2 == 1:
+    if len(players) % 2 == 1:  # checking if players list is pair
         return []
-    if len(players) == 0:
+    if len(players) == 0:  # if the list is == 0, we stop creating matches
         return []
     first_player = players[0]
     for player in players[1:]:
@@ -52,7 +52,7 @@ class Tournament:
         return f'{self.name}'
 
     def serialize(self):
-
+        """serialize the tournament"""
         serialized_tournament = {
             'name': self.name,
             'date': self.date,
@@ -117,6 +117,7 @@ class Tournament:
                 self.opponents[match.id_player_2].append(match.id_player_1)
 
     def end_round(self):
+        """finish the round and update the scores """
         self.list_of_rounds[-1].round_ended()
         last_round = self.ongoing_round - 1
         for match in self.list_of_rounds[last_round - 1].list_of_matches:

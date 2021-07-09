@@ -17,6 +17,7 @@ class Round:
         return f'{self.list_of_matches}'
 
     def round_ended(self):
+        """update ended_at with the actual time"""
         self.ended_at = datetime.now().strftime("%Y/%m/%d/%H:%M")
 
     def show_matches_in_round(self):
@@ -24,6 +25,7 @@ class Round:
             print(f'{self.round_name}', match)
 
     def serialize(self):
+        """serialize a round"""
         serialized_round = {
             'round_name': self.round_name,
             'round_number': self.round_number,

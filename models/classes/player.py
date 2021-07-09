@@ -18,7 +18,7 @@ class Player:
         return self.last_name
 
     def serialize(self):
-
+        """serialize a player"""
         serialized_player = {
             'first_name': self.first_name,
             'last_name': self.last_name,

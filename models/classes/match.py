@@ -31,7 +31,7 @@ class Match:
         self.status = 'Round ended'
 
     def serialize(self):
-
+        """serialize a match"""
         serialized_match = {
             'status': self.status,
             'id_player_1': self.id_player_1,
