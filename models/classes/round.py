@@ -10,7 +10,7 @@ class Round:
         self.round_number = int(round_number)
         self.list_of_matches = list_of_matches
         self.started_at = started_at if started_at is not None else\
-            datetime.now().strftime("%Y/%m/%d/  %H:%M")
+            datetime.now().strftime("%Y/%m/%d  %H:%M")
         self.ended_at = ended_at
 
     def __str__(self):
@@ -18,7 +18,7 @@ class Round:
 
     def round_ended(self):
         """update ended_at with the actual time"""
-        self.ended_at = datetime.now().strftime("%Y/%m/%d/%H:%M")
+        self.ended_at = datetime.now().strftime("%Y/%m/%d  %H:%M")
 
     def show_matches_in_round(self):
         for match in self.list_of_matches:
