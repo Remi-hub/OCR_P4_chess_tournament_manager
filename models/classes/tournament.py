@@ -95,11 +95,15 @@ class Tournament:
 
         else:
             sorted_players = sorted(self.scores.items(),
+                                    #  item[1]==(score, rating)
+                                    #  item[1][0] == (score)
+                                    #  item[1][1] == (rating)
                                     key=lambda item: (item[1][0], item[1][1]),
                                     reverse=True)
             list_of_matches = []
             matches = get_matches(sorted_players, self.opponents)
             for pair in matches:
+                # pair[0][0] == player key == id
                 match = Match('on going', pair[0][0], pair[1][0])
                 list_of_matches.append(match)
             next_round = Round(f'round {self.ongoing_round} |',
@@ -111,8 +115,10 @@ class Tournament:
     def add_opponent(self):
         """fill opponents with last round matches"""
         for match in self.list_of_rounds[-1].list_of_matches:
+            # checking if match.id_player_2 is not in opponents of match.id_player_1
             if not self.opponents[match.id_player_1].count(match.id_player_2):
                 self.opponents[match.id_player_1].append(match.id_player_2)
+            # checking if match.id_player_1 is not in opponents of match.id_player_2
             if not self.opponents[match.id_player_2].count(match.id_player_1):
                 self.opponents[match.id_player_2].append(match.id_player_1)
 
